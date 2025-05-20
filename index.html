@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цокаев Хамид — DevOps</title>
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="alternate icon" type="image/svg+xml" href="/icon.svg">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <style>
+        :root {
+            --primary-color: #00ff00;
+            --secondary-color: #00ffff;
+            --background-color: black;
+            --font-size-base: clamp(14px, 2vw, 1.2em);
+            --icon-size: clamp(40px, 5vw, 60px);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            font-family: 'Courier New', Courier, monospace;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+
+        .logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+            width: var(--icon-size);
+            height: var(--icon-size);
+            transition: transform 0.3s ease;
+            filter: drop-shadow(0 0 5px var(--secondary-color));
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(5deg);
+            filter: drop-shadow(0 0 10px var(--secondary-color));
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 5px var(--secondary-color));
+            }
+            to {
+                filter: drop-shadow(0 0 15px var(--secondary-color));
+            }
+        }
+
+        .info {
+            position: relative;
+            z-index: 1;
+            font-size: var(--font-size-base);
+            color: var(--secondary-color);
+            text-shadow: 0 0 5px var(--secondary-color);
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: clamp(10px, 3vw, 20px) clamp(20px, 5vw, 40px);
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--secondary-color);
+            max-width: min(80%, 800px);
+            text-align: center;
+            line-height: 1.6;
+            transition: transform 0.2s ease;
+            margin: 20px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .info:hover {
+            transform: scale(1.02);
+            text-shadow: 0 0 10px var(--secondary-color);
+        }
+
+        .info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+        }
+
+        .info a:hover {
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .info a::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1px;
+            bottom: -2px;
+            left: 0;
+            background-color: var(--primary-color);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .info a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .info .section {
+            margin: 15px 0;
+        }
+
+        .info .section-title {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .info .list {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0;
+        }
+
+        .info .list li {
+            margin: 5px 0;
+        }
+
+        .info .contacts {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 768px) {
+            .logo {
+                top: 15px;
+                left: 15px;
+            }
+
+            .info {
+                font-size: 0.9em;
+                padding: 15px;
+                margin: 10px;
+                max-width: 90%;
+            }
+            
+            canvas {
+                opacity: 0.7;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                top: 10px;
+                left: 10px;
+            }
+
+            .info {
+                font-size: 0.8em;
+                padding: 10px;
+                margin: 5px;
+                max-width: 95%;
+            }
+            
+            canvas {
+                opacity: 0.5;
+            }
+        }
+
+        /* Анимация появления */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .info {
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Оптимизация для устройств с низкой производительностью */
+        @media (prefers-reduced-motion: reduce) {
+            .info, .logo {
+                animation: none;
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="/icon.svg" alt="Logo" class="logo">
+    <canvas id="matrix"></canvas>
+    <div class="info">
+        <div class="section">
+            DevOps-специалист, ищу возможности для роста и развития!
+        </div>
+
+        <div class="section">
+            Меня зовут Цокаев Хамид.<br>
+            Связист сотовой связи, сейчас ищу работу в направлении DevOps.
+        </div>
+
+        <div class="section">
+            <div class="section-title">Я — профессионал, который может:</div>
+            <ul class="list">
+                <li>🔹 Сделать из хаоса порядок</li>
+                <li>🔹 Из кода — чистую систему</li>
+                <li>🔹 Настроить и оптимизировать инфраструктуру</li>
+                <li>🔹 Автоматизировать процессы</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <div class="section-title">Имею опыт в:</div>
+            <ul class="list">
+                <li>🔹 Настройке сетевых устройств</li>
+                <li>🔹 Работе с Ansible, Docker, Kubernetes, Terraform</li>
+                <li>🔹 CI/CD-интеграции</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            Призываю к сотрудничеству — давайте создадим нечто большее!
+        </div>
+
+        <div class="contacts">
+            <a href="mailto:bilalline@gmail.com">✉️ Почта: bilalline@gmail.com</a><br>
+            <a href="https://t.me/bilalline" target="_blank">📱 Telegram: @bilalline</a><br>
+            <a href="https://t.me/programny_koshmar" target="_blank">👥 Группа в Телеграмме: t.me/programny_koshmar</a>
+        </div>
+    </div>
+
+    <script>
+        // Конфигурация
+        const config = {
+            fps: 30,
+            fontSize: 16,
+            fadeSpeed: 0.05,
+            clickParticles: 50,
+            clickRadius: 50,
+            clickSpeed: 3
+        };
+
+        // Функция для получения случайного цвета
+        function getRandomColor() {
+            return '#' + Math.floor(Math.random()*16777215).toString(16);
+        }
+
+        // Массив для хранения цветов каждой колонки
+        let columnColors = [];
+
+        // Инициализация canvas
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        let animationFrameId;
+        let lastTime = 0;
+        let drops = [];
+        let isLowPerformance = false;
+
+        // Проверка производительности
+        function checkPerformance() {
+            const start = performance.now();
+            for (let i = 0; i < 1000000; i++) {
+                Math.random();
+            }
+            const end = performance.now();
+            isLowPerformance = (end - start) > 100;
+            if (isLowPerformance) {
+                config.fps = 20;
+                config.clickParticles = 25;
+            }
+        }
+
+        // Оптимизированная функция отрисовки
+        function draw(timestamp) {
+            if (!lastTime) lastTime = timestamp;
+            const elapsed = timestamp - lastTime;
+            
+            if (elapsed > (1000 / config.fps)) {
+                lastTime = timestamp;
+                
+                ctx.fillStyle = `rgba(0, 0, 0, ${config.fadeSpeed})`;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.font = `${config.fontSize}px monospace`;
+
+                for (let i = 0; i < drops.length; i++) {
+                    // Если для этой колонки еще нет цвета, создаем новый
+                    if (!columnColors[i]) {
+                        columnColors[i] = getRandomColor();
+                    }
+                    
+                    ctx.fillStyle = columnColors[i];
+                    const text = getRandomCodeLine();
+                    ctx.fillText(text, i * config.fontSize, drops[i] * config.fontSize);
+
+                    if (drops[i] * config.fontSize > canvas.height && Math.random() > 0.975) {
+                        drops[i] = 0;
+                        // Обновляем цвет при сбросе капли
+                        columnColors[i] = getRandomColor();
+                    }
+                    drops[i]++;
+                }
+            }
+            
+            animationFrameId = requestAnimationFrame(draw);
+        }
+
+        // Оптимизированная функция получения случайной строки кода
+        const codeLines = [
+            // Импорты
+            'import os', 'import sys', 'import re', 'import json', 'import yaml',
+            'import requests', 'import threading', 'import logging', 'import time',
+            'import random', 'import datetime', 'import subprocess', 'import socket',
+            'import hashlib', 'import base64', 'import uuid', 'import asyncio',
+            'from flask import Flask', 'from django.db import models', 'from typing import List',
+            'from dataclasses import dataclass', 'from enum import Enum', 'from pathlib import Path',
+            
+            // Функции и классы
+            'def main():', 'def process_data():', 'def validate_input():',
+            'def handle_error():', 'def send_request():', 'def parse_response():',
+            'def save_to_db():', 'def load_config():', 'def check_permissions():',
+            'class User:', 'class Database:', 'class Config:', 'class Service:',
+            'class API:', 'class Worker:', 'class Manager:', 'class Handler:',
+            
+            // Переменные и константы
+            'MAX_RETRIES = 3', 'TIMEOUT = 30', 'DEBUG = True', 'API_KEY = "***"',
+            'DB_HOST = "localhost"', 'PORT = 8080', 'VERSION = "1.0.0"',
+            'DEFAULT_CONFIG = {}', 'ERROR_MESSAGES = {}', 'STATUS_CODES = {}',
+            
+            // Условные конструкции
+            'if __name__ == "__main__":', 'if response.status_code == 200:',
+            'if not data:', 'if error:', 'if user.is_authenticated:',
+            'elif condition:', 'else:', 'try:', 'except Exception as e:',
+            'finally:', 'with open("file.txt") as f:', 'for item in items:',
+            'while True:', 'async def async_func():', 'await response.json()',
+            
+            // Docker и DevOps
+            'FROM python:3.9', 'RUN pip install -r requirements.txt',
+            'COPY . /app', 'WORKDIR /app', 'EXPOSE 8080', 'CMD ["python", "app.py"]',
+            'docker-compose up -d', 'kubectl apply -f config.yaml',
+            'terraform init', 'ansible-playbook site.yml', 'git push origin main',
+            
+            // Системные команды
+            'os.system("command")', 'subprocess.run(["cmd"])', 'os.makedirs(path)',
+            'os.path.join(dir, file)', 'os.environ.get("VAR")', 'sys.exit(1)',
+            'logging.info("message")', 'time.sleep(1)', 'random.randint(1, 100)',
+            
+            // Работа с данными
+            'json.loads(data)', 'json.dumps(obj)', 'yaml.safe_load(config)',
+            'yaml.dump(data)', 'base64.b64encode(data)', 'hashlib.md5(data)',
+            'uuid.uuid4()', 'datetime.now()', 'socket.gethostname()'
+        ];
+
+        function getRandomCodeLine() {
+            const line = codeLines[Math.floor(Math.random() * codeLines.length)];
+            const indent = '  '.repeat(Math.floor(Math.random() * 4));
+            return indent + line;
+        }
+
+        // Оптимизированная функция обработки клика
+        function handleClick(e) {
+            const x = e.clientX;
+            const y = e.clientY;
+
+            for (let i = 0; i < config.clickParticles; i++) {
+                const angle = Math.random() * 2 * Math.PI;
+                const speed = Math.random() * config.clickSpeed + 1;
+                const radius = Math.random() * config.clickRadius;
+
+                setTimeout(() => {
+                    const randomColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+                    ctx.fillStyle = randomColor;
+                    ctx.font = `${config.fontSize}px monospace`;
+                    const text = getRandomCodeLine();
+                    ctx.fillText(text, x + Math.cos(angle) * radius, y + Math.sin(angle) * radius);
+                }, i * 20);
+            }
+        }
+
+        // Инициализация
+        function init() {
+            checkPerformance();
+            resizeCanvas();
+            drops = Array(Math.floor(canvas.width / config.fontSize)).fill(1);
+            columnColors = Array(Math.floor(canvas.width / config.fontSize)).fill(null);
+            animationFrameId = requestAnimationFrame(draw);
+        }
+
+        // Оптимизированная функция изменения размера
+        let resizeTimeout;
+        function resizeCanvas() {
+            if (resizeTimeout) clearTimeout(resizeTimeout);
+            
+            resizeTimeout = setTimeout(() => {
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+                canvas.style.width = window.innerWidth + 'px';
+                canvas.style.height = window.innerHeight + 'px';
+                ctx.scale(dpr, dpr);
+                
+                drops = Array(Math.floor(canvas.width / config.fontSize)).fill(1);
+                columnColors = Array(Math.floor(canvas.width / config.fontSize)).fill(null);
+            }, 250);
+        }
+
+        // Очистка
+        function cleanup() {
+            if (animationFrameId) {
+                cancelAnimationFrame(animationFrameId);
+            }
+        }
+
+        // Обработчики событий
+        window.addEventListener('resize', resizeCanvas);
+        canvas.addEventListener('click', handleClick);
+        window.addEventListener('beforeunload', cleanup);
+
+        // Запуск
+        init();
+    </script>
+</body>
+</html>
