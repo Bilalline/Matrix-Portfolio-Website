@@ -5,7 +5,7 @@ services:
     build: .
     container_name: matrix-website
     ports:
-      - "70:8080"
+      - "8080:8080"
     volumes:
       - ./index.html:/usr/share/nginx/html/index.html:ro
       - ./icon.svg:/usr/share/nginx/html/icon.svg:ro
